@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #graph-container {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      cursor: crosshair;
+    }
+    .node {
+      width: 30px;
+      height: 30px;
+      background-color: #ccc;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      font-size: 14px;
+      position: absolute;
+      cursor: pointer;
+    }
+    .node.selected {
+      background-color: #ff6666;
+    }
+    .edge {
+      position: absolute;
+      border: 2px solid #999;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <button onclick="setAction('add')">Adicionar Vértices</button>
+    <button onclick="setAction('remove')">Remover Vértices</button>
+    <button onclick="setAction('addEdge')">Adicionar Arestas</button>
+    <button onclick="setAction('removeEdge')">Remover Arestas</button>
+  </div>
+
+  <div id="graph-container" onclick="performAction(event)">
+  </div>
+
+  <script>
+    var nodes = [];
+    var edges = [];
+    var action = '';
+    var selectedNodes = [];
+
+    function setAction(selectedAction) {
+      action = selectedAction;
+      resetSelectedNodes();
+    }
+
+    function performAction(event) {
+      if (action === 'add') {
+        addNode(event);
+      } else if (action === 'remove') {
+        removeNode(event);
+      } else if (action === 'addEdge') {
+        selectNode(event);
+      } else if (action === 'removeEdge') {
+        removeEdge(event);
+      }
+    }
+
+    function addNode(event) {
+      var node = document.createElement("div");
+      node.className = "node";
+      node.innerHTML = nodes.length + 1;
+      node.style.top = (event.clientY - 15) + "px";
+      node.style.left = (event.clientX - 15) + "px";
+      document.getElementById("graph-container").appendChild(node);
+      nodes.push(node);
+    }
+
+    function removeNode(event) {
+      var target = event.target;
+      if (target.className === 'node') {
+        var index = nodes.indexOf(target);
+        if (index > -1) {
+          nodes.splice(index, 1);
+          target.parentNode.removeChild(target);
+          removeConnectedEdges(target);
+        }
+      }
+    }
+
+    function selectNode(event) {
+      var target = event.target;
+      if (target.className === 'node') {
+        target.classList.toggle('selected');
+        if (target.classList.contains('selected')) {
+          selectedNodes.push(target);
+          if (selectedNodes.length === 2) {
+            addEdge(selectedNodes[0], selectedNodes[1]);
+            resetSelectedNodes();
+          }
+        } else {
+          selectedNodes.splice(selectedNodes.indexOf(target), 1);
+        }
+      }
+    }
+
+    function addEdge(node1, node2) {
+      var edge = document.createElement("div");
+      edge.className = "edge";
+      var node1Rect = node1.getBoundingClientRect();
+      var node2Rect = node2.getBoundingClientRect();
+      var containerRect = document.getElementById("graph-container").getBoundingClientRect();
+      var containerTop = containerRect.top;
+      var containerLeft = containerRect.left;
+
+      var edgeTop = node1Rect.top + node1Rect.height / 2 - containerTop;
+      var edgeLeft = node1Rect.left + node1Rect.width / 2 - containerLeft;
+      var edgeWidth = getDistance(node1Rect, node2Rect);
+      var edgeAngle = getAngle(node1Rect, node2Rect);
+
+      edge.style.top = edgeTop + "px";
+      edge.style.left = edgeLeft + "px";
+      edge.style.width = edgeWidth + "px";
+      edge.style.transform = "rotate(" + edgeAngle + "deg)";
+
+      document.getElementById("graph-container").appendChild(edge);
+      edges.push(edge);
+    }
+
+    function removeEdge(event) {
+      var target = event.target;
+      if (target.className === 'edge') {
+        var index = edges.indexOf(target);
+        if (index > -1) {
+          edges.splice(index, 1);
+          target.parentNode.removeChild(target);
+        }
+      }
+    }
+
+    function removeConnectedEdges(node) {
+      edges = edges.filter(function(edge) {
+        var edgeRect = edge.getBoundingClientRect();
+        var nodeRect = node.getBoundingClientRect();
+        return !(Math.round(edgeRect.top) === Math.round(nodeRect.top + nodeRect.height / 2) && Math.round(edgeRect.left) === Math.round(nodeRect.left + nodeRect.width / 2));
+      });
+    }
+
+    function getDistance(rect1, rect2) {
+      var center1 = getNodeCenter(rect1);
+      var center2 = getNodeCenter(rect2);
+      return Math.sqrt(Math.pow(center2.x - center1.x, 2) + Math.pow(center2.y - center1.y, 2));
+    }
+
+    function getAngle(rect1, rect2) {
+      var center1 = getNodeCenter(rect1);
+      var center2 = getNodeCenter(rect2);
+      return Math.atan2(center2.y - center1.y, center2.x - center1.x) * (180 / Math.PI);
+    }
+
+    function resetSelectedNodes() {
+      selectedNodes.forEach(function(node) {
+        node.classList.remove('selected');
+      });
+      selectedNodes = [];
+    }
+
+    function getNodeCenter(rect) {
+      return {
+        x: rect.left + (rect.width / 2),
+        y: rect.top + (rect.height / 2)
+      };
+    }
+  </script>
+</body>
+</html>
