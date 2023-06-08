@@ -1,4 +1,4 @@
-import { Grafo } from "./grafo";
+import { Grafo } from "./models/Grafo";
 
 // Criar um objeto Grafo
 const grafo = new Grafo();
@@ -16,13 +16,14 @@ grafo.adicionarAresta(3, 4);
 grafo.adicionarAresta(4, 1);
 
 // Exibir o número de vértices e arestas
-console.log('Número de vértices:', grafo.vertices);
-console.log('Número de arestas:', grafo.arestas);
+//console.log('Número de vértices:', grafo.vertices);
+//console.log('Número de arestas:', grafo.arestas);
 
 // Remover um vértice e uma aresta
 grafo.removerVertice(3);
 grafo.removerAresta(4, 1);
 
 // Exibir o número de vértices e arestas após a remoção
-console.log('Número de vértices:', grafo.vertices);
-console.log('Número de arestas:', grafo.arestas);
+//console.log('Número de vértices:', grafo.vertices);
+//console.log('Número de arestas:', grafo.arestas);*/
+grafo.exibirGrafo();

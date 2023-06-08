@@ -1,7 +1,7 @@
 export class Grafo {
-    public vertices: number;
-    public arestas: number;
-    public adjacencia: Map<number, number[]>;
+    private vertices: number;
+    private arestas: number;
+    private adjacencia: Map<number, number[]>;
   
     constructor() {
       this.vertices = 0;
@@ -57,6 +57,13 @@ export class Grafo {
         this.adjacencia.get(verticeDestino)?.splice(indexDestino, 1);
         this.arestas--;
       }
+    }
+
+    exibirGrafo(): void{
+        for(const[vertice, adjacentes] of this.adjacencia.entries()){
+            const arestas = adjacentes.join(", ");
+            console.log(`Vértice ${vertice}: arestas -> ${arestas}`);
+        }
     }
   }
   
