@@ -1,84 +1,107 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Network, Node, Edge } from 'vis-network';
-import { GrafoLib } from '../../models/GrafoLib';
+import React, { useRef, useState, useEffect } from 'react';
+import vis, { Network, Node, Edge, Position } from 'vis-network';
+import { DataSet } from 'vis-network/standalone';
 
-const Grafo: React.FC = () => {
-    const [grafo, setGrafo] = useState<GrafoLib | null>(null);
 
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    let network: Network | null = null;
-    let nodes: Node[] = [
-    ];
-    let edges: Edge[] = [
+interface GraphNode extends Node {
+  connections?: string[];
+}
 
-    ];
+interface GraphData {
+  nodes: DataSet<GraphNode>;
+  edges: DataSet<Edge>;
+}
 
-    const handleContainerClick = (event: MouseEvent) => {
-        if (network) {
-            const position = network.canvasToDOM({ x: event.clientX, y: event.clientY });
-            const id = nodes.length + 1;
-            const newNode: Node = {
-                id,
-                label: id.toString(),
-                x: position.x,
-                y: position.y,
-            };
-            nodes = [...nodes, newNode];
-            network.setData({ nodes, edges });
-        }
+const MyNetworkComponent: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const exportAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [network, setNetwork] = useState<Network | null>(null);
 
-        grafo?.exibirGrafo()
+  const draw = () => {
+    const data = {
+      nodes: new DataSet<GraphNode>(),
+      edges: new DataSet<Edge>(),
+    };
+    const options = {
+      manipulation: { enabled: true },
     };
 
-    useEffect(() => {
-        const aux = new GrafoLib()
-        aux.adicionarVertice(1)
-        setGrafo(aux)
-        //aux.exibirGrafo()
+    const networkInstance = new Network(containerRef.current!, data, options);
+    setNetwork(networkInstance);
+  };
 
-        if (containerRef.current) {
-            // Opções de configuração do grafo
-            const options = {
-                nodes: {
-                    shape: 'circle',
-                    font: {
-                        size: 20,
-                    },
-                    size: 20,
-                    borderWidth: 2,
-                },
-                edges: {
-                    width: 3,
-                    color: {
-                        color: 'gray',
-                        highlight: 'black',
-                    },
-                },
-                interaction: {
-                    dragNodes: true,
-                },
-            };
+  const clearOutputArea = () => {
+    if (exportAreaRef.current) {
+      exportAreaRef.current.value = '';
+    }
+  };
 
-            // Criar a instância do grafo
-            network = new Network(containerRef.current, { nodes, edges }, options);
+  const exportNetwork = () => {
+    if (network && exportAreaRef.current) {
+      clearOutputArea();
 
-            // Adicionar o evento de clique ao contêiner do grafo
-            containerRef.current.addEventListener('click', handleContainerClick);
-        }
+      const nodes = network.getPositions();
+      const exportValue = JSON.stringify(nodes, undefined, 2);
 
-        // Limpar a instância do grafo e remover o evento ao desmontar o componente
-        return () => {
-            if (network) {
-                network.destroy();
-                network = null;
-            }
-            if (containerRef.current) {
-                containerRef.current.removeEventListener('click', handleContainerClick);
-            }
-        };
-    }, []);
+      exportAreaRef.current.value = exportValue;
 
-    return <div ref={containerRef} style={{ height: '500px' }} />;
+      resizeExportArea();
+    }
+  };
+
+  const importNetwork = () => {
+    if (exportAreaRef.current) {
+      const inputValue = exportAreaRef.current.value;
+      const inputData: GraphNode[] = JSON.parse(inputValue);
+
+      const data: GraphData = {
+        nodes: new DataSet(inputData),
+        edges: new DataSet(),
+      };
+
+      if (containerRef.current) {
+        const networkInstance = new Network(containerRef.current, data, {});
+        setNetwork(networkInstance);
+      }
+
+      resizeExportArea();
+    }
+  };
+
+  const addConnections = (node: GraphNode) => {
+    if (network && node.id !== undefined) {
+      node.connections = network.getConnectedNodes(node.id) as string[];
+    }
+  };
+    
+
+  const destroyNetwork = () => {
+    if (network) {
+      network.destroy();
+      setNetwork(null);
+    }
+  };
+
+  const resizeExportArea = () => {
+    if (exportAreaRef.current) {
+      exportAreaRef.current.style.height = `1px + ${exportAreaRef.current.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    draw();
+    // Cleanup function to destroy the network when the component unmounts
+    return () => {
+      destroyNetwork();
+    };
+  }, []);
+
+  return (
+    <div>
+      <div ref={containerRef} id="mynetwork" />
+
+    </div>
+  );
 };
 
-export default Grafo;
+export default MyNetworkComponent;
