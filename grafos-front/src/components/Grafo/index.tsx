@@ -1,17 +1,16 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Network, Node, Edge } from 'vis-network';
+import { GrafoLib } from '../../models/GrafoLib';
 
 const Grafo: React.FC = () => {
+    const [grafo, setGrafo] = useState<GrafoLib | null>(null);
+
     const containerRef = useRef<HTMLDivElement | null>(null);
     let network: Network | null = null;
     let nodes: Node[] = [
-        { id: 1, label: '1', x: 100, y: 100 },
-        { id: 2, label: '2', x: 200, y: 200 },
-        { id: 3, label: '3', x: 300, y: 300 },
     ];
     let edges: Edge[] = [
-        { from: 1, to: 2 },
-        { from: 1, to: 3 },
+
     ];
 
     const handleContainerClick = (event: MouseEvent) => {
@@ -27,9 +26,16 @@ const Grafo: React.FC = () => {
             nodes = [...nodes, newNode];
             network.setData({ nodes, edges });
         }
+
+        grafo?.exibirGrafo()
     };
 
     useEffect(() => {
+        const aux = new GrafoLib()
+        aux.adicionarVertice(1)
+        setGrafo(aux)
+        //aux.exibirGrafo()
+
         if (containerRef.current) {
             // Opções de configuração do grafo
             const options = {
