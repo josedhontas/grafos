@@ -36,6 +36,12 @@ const MyNetworkComponent: React.FC = () => {
 
   const draw = () => {
     const options = {
+      nodes: {
+        shape: "circle", 
+        font: {
+          size: 20, 
+        },
+      },
       locale: 'pt-br',
       locales: locales,
         manipulation: {
