@@ -8,6 +8,11 @@ interface GraphNode extends Node {
 }
 
 const MyNetworkComponent: React.FC = () => {
+  const [grafo, setGrafo] = useState<GrafoLib>(() => {
+    const newGrafo = new GrafoLib();
+    newGrafo.adicionarVertice(); // Adicionar um vértice inicial ao criar o grafo
+    return newGrafo;
+  });
   const containerRef = useRef<HTMLDivElement>(null);
   const exportAreaRef = useRef<HTMLTextAreaElement>(null);
   const [network, setNetwork] = useState<Network | null>(null);
@@ -15,6 +20,11 @@ const MyNetworkComponent: React.FC = () => {
     nodes: new DataSet<GraphNode>(),
     edges: new DataSet<Edge>(),
   };
+
+  useEffect(() => {
+    console.log(grafo);
+  }, [grafo]);
+
 
   var locales = {
     en: {
@@ -37,33 +47,34 @@ const MyNetworkComponent: React.FC = () => {
   const draw = () => {
     const options = {
       nodes: {
-        shape: "circle", 
+        shape: "circle",
         font: {
-          size: 20, 
+          size: 20,
         },
       },
       locale: 'pt-br',
       locales: locales,
-        manipulation: {
-          enabled: true,
-          addNode: (nodeData: Node, callback: (data: Node) => void) => {
-            const grafo = new GrafoLib();
-            const newNode = {
-              id: nodeData.id,
-              label: String(grafo.adicionarVertice()),
-              x: nodeData.x,
-              y: nodeData.y,
-            };
-            data.nodes.add(newNode);
-      
-            if (network) {
-              network.setData(data);
-            }
-          },
+      manipulation: {
+        enabled: true,
+        addNode: (nodeData: Node, callback: (data: Node) => void) => {
+
+          const newNode = {
+            id: nodeData.id,
+            label: String(grafo.adicionarVertice()),
+            x: nodeData.x,
+            y: nodeData.y,
+          };
+          data.nodes.add(newNode);
+          //setGrafo(grafo)
+          console.log(grafo)
+          if (network) {
+            network.setData(data);
+          }
         },
-      };
-      
-      
+      },
+    };
+
+
 
     const networkInstance = new Network(containerRef.current!, data, options);
     setNetwork(networkInstance);

@@ -10,9 +10,10 @@ export class GrafoLib {
   }
 
   adicionarVertice(): number {
-    this.vertices++;
     this.adjacencia.set(this.vertices, []);
-    return this.vertices
+    const vertice = this.vertices
+    this.vertices++;
+    return vertice
   }
 
   adicionarAresta(verticeOrigem: number, verticeDestino: number): void {
