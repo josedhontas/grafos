@@ -19,14 +19,14 @@ const MyNetworkComponent: React.FC = () => {
   var locales = {
     en: {
       edit: 'Editar',
-      del: 'Delete selected',
+      del: 'Apagar',
       back: 'Voltar',
       addNode: 'Adicionar vértice',
       addEdge: 'Adcionar aresta',
       editNode: 'Editar vértice',
       editEdge: 'Editar aresta',
       addDescription: 'Clique em um espaço em branco para adicionar um vértice.',
-      edgeDescription: 'Click on a node and drag the edge to another node to connect them.',
+      edgeDescription: 'Selecione um vértice e araste para criar uma aresta.',
       editEdgeDescription: 'Click on the control points and drag them to a node to connect to it.',
       createEdgeError: 'Cannot link edges to a cluster.',
       deleteClusterError: 'Clusters cannot be deleted.',
@@ -72,7 +72,6 @@ const MyNetworkComponent: React.FC = () => {
 
   useEffect(() => {
     draw();
-    // Cleanup function to destroy the network when the component unmounts
     return () => {
       destroyNetwork();
     };
