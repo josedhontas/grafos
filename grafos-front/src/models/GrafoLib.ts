@@ -9,9 +9,10 @@ export class GrafoLib {
     this.adjacencia = new Map<number, number[]>();
   }
 
-  adicionarVertice(vertice: number): void {
-    this.adjacencia.set(vertice, []);
+  adicionarVertice(): number {
     this.vertices++;
+    this.adjacencia.set(this.vertices, []);
+    return this.vertices
   }
 
   adicionarAresta(verticeOrigem: number, verticeDestino: number): void {
