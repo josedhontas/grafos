@@ -11,9 +11,8 @@ export class GrafoLib {
 
   adicionarVertice(): number {
     this.adjacencia.set(this.vertices, []);
-    const vertice = this.vertices
     this.vertices++;
-    return vertice
+    return this.vertices
   }
 
   adicionarAresta(verticeOrigem: number, verticeDestino: number): void {

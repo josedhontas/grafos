@@ -10,7 +10,6 @@ interface GraphNode extends Node {
 const MyNetworkComponent: React.FC = () => {
   const [grafo, setGrafo] = useState<GrafoLib>(() => {
     const newGrafo = new GrafoLib();
-    newGrafo.adicionarVertice(); // Adicionar um vértice inicial ao criar o grafo
     return newGrafo;
   });
   const containerRef = useRef<HTMLDivElement>(null);
