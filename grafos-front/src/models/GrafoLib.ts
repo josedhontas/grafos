@@ -10,8 +10,8 @@ export class GrafoLib {
   }
 
   adicionarVertice(): number {
+    this.vertices++
     this.adjacencia.set(this.vertices, []);
-    this.vertices++;
     return this.vertices
   }
 

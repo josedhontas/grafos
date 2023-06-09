@@ -56,16 +56,30 @@ const MyNetworkComponent: React.FC = () => {
       manipulation: {
         enabled: true,
         addNode: (nodeData: Node, callback: (data: Node) => void) => {
-
-          const newNode = {
-            id: nodeData.id,
-            label: String(grafo.adicionarVertice()),
+          const vertice = grafo.adicionarVertice()
+          const novoVertice = {
+            id: vertice,
+            label: String(vertice),
             x: nodeData.x,
             y: nodeData.y,
           };
-          data.nodes.add(newNode);
-          //setGrafo(grafo)
+          data.nodes.add(novoVertice);
+          setGrafo(grafo)
           console.log(grafo)
+          if (network) {
+            network.setData(data);
+          }
+        },
+        addEdge: (edgeData: Edge, callback: (data: Edge) => void) => {
+          const novaAresta = {
+            id: edgeData.id,
+            from: edgeData.from,
+            to: edgeData.to,
+          };
+          grafo.adicionarAresta(Number(novaAresta.from), Number(novaAresta.to))
+          grafo.exibirGrafo()
+          setGrafo(grafo)
+          data.edges.add(novaAresta);
           if (network) {
             network.setData(data);
           }
