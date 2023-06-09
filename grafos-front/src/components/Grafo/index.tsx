@@ -27,10 +27,10 @@ const MyNetworkComponent: React.FC = () => {
       editEdge: 'Editar aresta',
       addDescription: 'Clique em um espaço em branco para adicionar um vértice.',
       edgeDescription: 'Selecione um vértice e araste para criar uma aresta.',
-      editEdgeDescription: 'Click on the control points and drag them to a node to connect to it.',
-      createEdgeError: 'Cannot link edges to a cluster.',
-      deleteClusterError: 'Clusters cannot be deleted.',
-      editClusterError: 'Clusters cannot be edited.'
+      editEdgeDescription: 'Clique nos cantos para ajustar a aresta.',
+      createEdgeError: 'Nao pode ligar aresta.',
+      deleteClusterError: 'Não pode ser apagado.',
+      editClusterError: 'Não pode ser editado.'
     }
   }
 
