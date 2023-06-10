@@ -34,6 +34,7 @@ const MyNetworkComponent: React.FC = () => {
       }
     }
     console.log(newValue);
+
   };
   const [grafo, setGrafo] = useState<GrafoLib>(() => {
     const newGrafo = new GrafoLib();
@@ -53,6 +54,7 @@ const MyNetworkComponent: React.FC = () => {
     if (network) {
       network.addNodeMode();
     }
+    setValue(6)
   };
 
   const addEdgeMode = () => {
