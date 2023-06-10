@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import vis, { Network, Node, Edge, Position } from 'vis-network';
+import { Network, Node, Edge } from 'vis-network';
 import { DataSet } from 'vis-network/standalone';
 import { GrafoLib } from '../../models/GrafoLib';
 
@@ -13,7 +13,6 @@ const MyNetworkComponent: React.FC = () => {
     return newGrafo;
   });
   const containerRef = useRef<HTMLDivElement>(null);
-  const exportAreaRef = useRef<HTMLTextAreaElement>(null);
   const [network, setNetwork] = useState<Network | null>(null);
   const data = {
     nodes: new DataSet<GraphNode>(),
@@ -21,7 +20,6 @@ const MyNetworkComponent: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(grafo);
   }, [grafo]);
 
 
@@ -64,17 +62,19 @@ const MyNetworkComponent: React.FC = () => {
             y: nodeData.y,
           };
           data.nodes.add(novoVertice);
-          console.log(grafo)
+          //grafo.exibirGrafo()
           if (network) {
             network.setData(data);
           }
         },
         addEdge: (edgeData: Edge, callback: (data: Edge) => void) => {
+          const arestaId = `${edgeData.from},${edgeData.to}`;
           const novaAresta = {
-            id: edgeData.id,
+            id: arestaId,
             from: edgeData.from,
             to: edgeData.to,
           };
+          console.log(novaAresta)
           grafo.adicionarAresta(Number(novaAresta.from), Number(novaAresta.to))
           grafo.exibirGrafo()
           data.edges.add(novaAresta);
@@ -83,9 +83,21 @@ const MyNetworkComponent: React.FC = () => {
           }
         },
         deleteNode: (nodeData: any, callback: () => void) => {
-          const nodeId = nodeData.nodes[0];
-          data.nodes.remove(nodeId);
-          grafo.removerVertice(Number(nodeId));
+          const vertice = nodeData.nodes[0];
+          data.nodes.remove(vertice);
+          grafo.removerVertice(Number(vertice));
+          grafo.exibirGrafo()
+          if (network) {
+            network.setData(data);
+          }
+          callback();
+        },
+        deleteEdge: (edgeData: any, callback: () => void) => {
+          const edgeId = edgeData.edges[0];
+          const [from, to] = edgeId.split(",").map(Number);
+          data.edges.remove(edgeId);
+          grafo.removerAresta(from, to);
+          grafo.exibirGrafo();
           if (network) {
             network.setData(data);
           }
