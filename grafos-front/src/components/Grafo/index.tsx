@@ -181,8 +181,8 @@ const MyNetworkComponent: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <Box sx={{ width: "100%" }}>
+    <div style={{ backgroundColor: '#B0C4DE' }}>
+    <Box sx={{ width: "100%" }}>
         <BottomNavigation
           showLabels
           value={value}
@@ -194,13 +194,13 @@ const MyNetworkComponent: React.FC = () => {
           <BottomNavigationAction label="Apagar" icon={<ClearIcon />} />
         </BottomNavigation>
       </Box>
-      <div style={{ width: '100%', height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px'}}>
-        <div ref={containerRef} id="mynetwork" style={{ width: '70%', height: '100%', backgroundColor: '#dddddd', borderRadius: '20px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)'  }}></div>
+      <div style={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-50px', }}>
+        <div ref={containerRef} id="mynetwork" style={{ width: '70%', height: '500px', backgroundColor: '#dddddd', borderRadius: '20px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)'  }}></div>
         <div></div>
       </div>
 
 
-    </>
+    </div>
   );
 };
 
