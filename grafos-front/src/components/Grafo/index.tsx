@@ -16,19 +16,19 @@ interface GraphNode extends Node {
 }
 
 const MyNetworkComponent: React.FC = () => {
-  const [value, setValue] = React.useState<number>(0);
+  const [value, setValue] = React.useState<number>(8);
 
   const handleNavigationChange = (event: React.SyntheticEvent, newValue: string | number) => {
     setValue(Number(newValue));
-    if(newValue == 0){
+    if (newValue == 0) {
       addNodeMode()
     }
 
-    if(newValue == 1){
+    if (newValue == 1) {
       addEdgeMode()
     }
 
-    if(newValue == 3){
+    if (newValue == 3) {
       if (network) {
         network.deleteSelected();
       }
@@ -52,9 +52,18 @@ const MyNetworkComponent: React.FC = () => {
 
   const addNodeMode = () => {
     if (network) {
-      network.addNodeMode();
+      const handleSingleClick = (event: MouseEvent) => {
+        setTimeout(() => {
+          handleClick(event);
+        }, 300);
+      };
+      const handleClick = (event: MouseEvent) => {
+        network.addNodeMode();
+      };
+      network.on('click', handleSingleClick);
+
     }
-    setValue(6)
+
   };
 
   const addEdgeMode = () => {
@@ -81,7 +90,7 @@ const MyNetworkComponent: React.FC = () => {
         },
         borderWidth: 2,
         shadow: true,
-        
+
       },
       edges: {
         width: 2,
@@ -102,29 +111,29 @@ const MyNetworkComponent: React.FC = () => {
           if (network) {
             network.setData(data);
           }
-          
+
         },
         addEdge: (edgeData: Edge, callback: (data: Edge) => void) => {
           const from = Number(edgeData.from);
           const to = Number(edgeData.to);
           const timestamp = Date.now(); // Obtém o timestamp atual em milissegundos
-        
+
           const arestaId = `${from},${to},${timestamp}`;
           const novaAresta = {
             id: arestaId,
             from: from,
             to: to,
           };
-        
+
           console.log(novaAresta);
           grafo.adicionarAresta(from, to);
           grafo.exibirGrafo();
           data.edges.add(novaAresta);
-        
+
           if (network) {
             network.setData(data);
           }
-        },        
+        },
         deleteNode: (nodeData: any, callback: () => void) => {
           const vertice = nodeData.nodes[0];
           data.nodes.remove(vertice);
@@ -173,22 +182,22 @@ const MyNetworkComponent: React.FC = () => {
 
   return (
     <>
-    <Box sx={{ width: "100%" }}>
-      <BottomNavigation
-        showLabels
-        value={value}
-        onChange={handleNavigationChange}
-      >
-        <BottomNavigationAction label="Vértice" icon={<AddCircleOutlineIcon />} />
-        <BottomNavigationAction label="Aresta" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Editar" icon={<EditIcon />} />
-        <BottomNavigationAction label="Apagar" icon={<ClearIcon />} />
-      </BottomNavigation>
-    </Box>
-    <div style={{ width: '100%', height: '500px'}}>
-      <div ref={containerRef} id="mynetwork" style={{ width: '80%', height: '100%', backgroundColor: '#dddddd'  }}></div>
-      <div></div>
-    </div>
+      <Box sx={{ width: "100%" }}>
+        <BottomNavigation
+          showLabels
+          value={value}
+          onChange={handleNavigationChange}
+        >
+          <BottomNavigationAction label="Vértice" icon={<AddCircleOutlineIcon />} />
+          <BottomNavigationAction label="Aresta" icon={<FavoriteIcon />} />
+          <BottomNavigationAction label="Editar" icon={<EditIcon />} />
+          <BottomNavigationAction label="Apagar" icon={<ClearIcon />} />
+        </BottomNavigation>
+      </Box>
+      <div style={{ width: '100%', height: '500px' }}>
+        <div ref={containerRef} id="mynetwork" style={{ width: '80%', height: '100%', backgroundColor: '#dddddd' }}></div>
+        <div></div>
+      </div>
     </>
   );
 };
