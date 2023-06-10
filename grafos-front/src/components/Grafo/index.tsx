@@ -1,4 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import EditIcon from '@mui/icons-material/Edit';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ClearIcon from '@mui/icons-material/Clear';
 import { Network, Node, Edge } from 'vis-network';
 import { DataSet } from 'vis-network/standalone';
 import { GrafoLib } from '../../models/GrafoLib';
@@ -8,6 +16,25 @@ interface GraphNode extends Node {
 }
 
 const MyNetworkComponent: React.FC = () => {
+  const [value, setValue] = React.useState<number>(0);
+
+  const handleNavigationChange = (event: React.SyntheticEvent, newValue: string | number) => {
+    setValue(Number(newValue));
+    if(newValue == 0){
+      addNodeMode()
+    }
+
+    if(newValue == 1){
+      addEdgeMode()
+    }
+
+    if(newValue == 3){
+      if (network) {
+        network.deleteSelected();
+      }
+    }
+    console.log(newValue);
+  };
   const [grafo, setGrafo] = useState<GrafoLib>(() => {
     const newGrafo = new GrafoLib();
     return newGrafo;
@@ -73,6 +100,7 @@ const MyNetworkComponent: React.FC = () => {
           if (network) {
             network.setData(data);
           }
+          
         },
         addEdge: (edgeData: Edge, callback: (data: Edge) => void) => {
           const from = Number(edgeData.from);
@@ -138,16 +166,28 @@ const MyNetworkComponent: React.FC = () => {
     return () => {
       destroyNetwork();
     };
+
   }, []);
 
   return (
+    <>
+    <Box sx={{ width: "100%" }}>
+      <BottomNavigation
+        showLabels
+        value={value}
+        onChange={handleNavigationChange}
+      >
+        <BottomNavigationAction label="Vértice" icon={<AddCircleOutlineIcon />} />
+        <BottomNavigationAction label="Aresta" icon={<FavoriteIcon />} />
+        <BottomNavigationAction label="Editar" icon={<EditIcon />} />
+        <BottomNavigationAction label="Apagar" icon={<ClearIcon />} />
+      </BottomNavigation>
+    </Box>
     <div style={{ width: '100%', height: '500px'}}>
       <div ref={containerRef} id="mynetwork" style={{ width: '80%', height: '100%', backgroundColor: '#dddddd'  }}></div>
-      <button onClick={addNodeMode}>Adicionar vértice</button>
-      <button onClick={addEdgeMode}>Adicionar aresta</button>
-      <button onClick={deleteSelected}>Apagar</button>
       <div></div>
     </div>
+    </>
   );
 };
 
