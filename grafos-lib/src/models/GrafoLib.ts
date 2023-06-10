@@ -1,4 +1,4 @@
-export class Grafo{
+export class GrafoLib {
   private vertices: number;
   private arestas: number;
   private adjacencia: Map<number, number[]>;
@@ -9,9 +9,10 @@ export class Grafo{
     this.adjacencia = new Map<number, number[]>();
   }
 
-  adicionarVertice(vertice: number): void {
-    this.adjacencia.set(vertice, []);
-    this.vertices++;
+  adicionarVertice(): number {
+    this.vertices++
+    this.adjacencia.set(this.vertices, []);
+    return this.vertices
   }
 
   adicionarAresta(verticeOrigem: number, verticeDestino: number): void {
