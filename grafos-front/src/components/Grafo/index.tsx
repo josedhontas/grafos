@@ -62,26 +62,32 @@ const MyNetworkComponent: React.FC = () => {
             y: nodeData.y,
           };
           data.nodes.add(novoVertice);
-          //grafo.exibirGrafo()
+          grafo.exibirGrafo()
           if (network) {
             network.setData(data);
           }
         },
         addEdge: (edgeData: Edge, callback: (data: Edge) => void) => {
-          const arestaId = `${edgeData.from},${edgeData.to}`;
+          const from = Number(edgeData.from);
+          const to = Number(edgeData.to);
+          const timestamp = Date.now(); // Obtém o timestamp atual em milissegundos
+        
+          const arestaId = `${from},${to},${timestamp}`;
           const novaAresta = {
             id: arestaId,
-            from: edgeData.from,
-            to: edgeData.to,
+            from: from,
+            to: to,
           };
-          console.log(novaAresta)
-          grafo.adicionarAresta(Number(novaAresta.from), Number(novaAresta.to))
-          grafo.exibirGrafo()
+        
+          console.log(novaAresta);
+          grafo.adicionarAresta(from, to);
+          grafo.exibirGrafo();
           data.edges.add(novaAresta);
+        
           if (network) {
             network.setData(data);
           }
-        },
+        },        
         deleteNode: (nodeData: any, callback: () => void) => {
           const vertice = nodeData.nodes[0];
           data.nodes.remove(vertice);
@@ -95,6 +101,7 @@ const MyNetworkComponent: React.FC = () => {
         deleteEdge: (edgeData: any, callback: () => void) => {
           const edgeId = edgeData.edges[0];
           const [from, to] = edgeId.split(",").map(Number);
+          console.log(from, to)
           data.edges.remove(edgeId);
           grafo.removerAresta(from, to);
           grafo.exibirGrafo();
