@@ -44,10 +44,18 @@ const MyNetworkComponent: React.FC = () => {
   const draw = () => {
     const options = {
       nodes: {
-        shape: "circle",
+        shape: "dot",
+        size: 15,
         font: {
-          size: 20,
+          size: 17,
+          align: "center", // Alinha o texto no centro do nó
         },
+        borderWidth: 2,
+        shadow: true,
+        
+      },
+      edges: {
+        width: 2,
       },
       locale: 'pt-br',
       locales: locales,
@@ -134,8 +142,8 @@ const MyNetworkComponent: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ width: '100%', height: '500px' }}>
-      <div ref={containerRef} id="mynetwork" style={{ width: '100%', height: '100%' }}></div>
+    <div style={{ width: '100%', height: '500px'}}>
+      <div ref={containerRef} id="mynetwork" style={{ width: '80%', height: '100%', backgroundColor: '#dddddd'  }}></div>
       <div></div>
     </div>
   );
