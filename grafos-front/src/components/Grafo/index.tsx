@@ -55,11 +55,12 @@ const MyNetworkComponent: React.FC = () => {
       const handleSingleClick = (event: MouseEvent) => {
         setTimeout(() => {
           handleClick(event);
-        }, 300);
+        }, 30);
       };
       const handleClick = (event: MouseEvent) => {
         network.addNodeMode();
       };
+      network.addNodeMode();
       network.on('click', handleSingleClick);
 
     }
