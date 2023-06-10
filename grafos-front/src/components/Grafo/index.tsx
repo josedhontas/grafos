@@ -22,24 +22,24 @@ const MyNetworkComponent: React.FC = () => {
   useEffect(() => {
   }, [grafo]);
 
-
-  var locales = {
-    en: {
-      edit: 'Editar',
-      del: 'Apagar',
-      back: 'Voltar',
-      addNode: 'Adicionar vértice',
-      addEdge: 'Adcionar aresta',
-      editNode: 'Editar vértice',
-      editEdge: 'Editar aresta',
-      addDescription: 'Clique em um espaço em branco para adicionar um vértice.',
-      edgeDescription: 'Selecione um vértice e araste para criar uma aresta.',
-      editEdgeDescription: 'Clique nos cantos para ajustar a aresta.',
-      createEdgeError: 'Nao pode ligar aresta.',
-      deleteClusterError: 'Não pode ser apagado.',
-      editClusterError: 'Não pode ser editado.'
+  const addNodeMode = () => {
+    if (network) {
+      network.addNodeMode();
     }
-  }
+  };
+
+  const addEdgeMode = () => {
+    if (network) {
+      network.addEdgeMode();
+    }
+  };
+
+  const deleteSelected = () => {
+    if (network) {
+      network.deleteSelected();
+    }
+  };
+
 
   const draw = () => {
     const options = {
@@ -58,9 +58,8 @@ const MyNetworkComponent: React.FC = () => {
         width: 2,
       },
       locale: 'pt-br',
-      locales: locales,
       manipulation: {
-        enabled: true,
+        enabled: false,
         addNode: (nodeData: Node, callback: (data: Node) => void) => {
           const vertice = grafo.adicionarVertice()
           const novoVertice = {
@@ -144,6 +143,9 @@ const MyNetworkComponent: React.FC = () => {
   return (
     <div style={{ width: '100%', height: '500px'}}>
       <div ref={containerRef} id="mynetwork" style={{ width: '80%', height: '100%', backgroundColor: '#dddddd'  }}></div>
+      <button onClick={addNodeMode}>Adicionar vértice</button>
+      <button onClick={addEdgeMode}>Adicionar aresta</button>
+      <button onClick={deleteSelected}>Apagar</button>
       <div></div>
     </div>
   );
