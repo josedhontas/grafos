@@ -64,7 +64,6 @@ const MyNetworkComponent: React.FC = () => {
             y: nodeData.y,
           };
           data.nodes.add(novoVertice);
-          setGrafo(grafo)
           console.log(grafo)
           if (network) {
             network.setData(data);
@@ -78,11 +77,19 @@ const MyNetworkComponent: React.FC = () => {
           };
           grafo.adicionarAresta(Number(novaAresta.from), Number(novaAresta.to))
           grafo.exibirGrafo()
-          setGrafo(grafo)
           data.edges.add(novaAresta);
           if (network) {
             network.setData(data);
           }
+        },
+        deleteNode: (nodeData: any, callback: () => void) => {
+          const nodeId = nodeData.nodes[0];
+          data.nodes.remove(nodeId);
+          grafo.removerVertice(Number(nodeId));
+          if (network) {
+            network.setData(data);
+          }
+          callback();
         },
       },
     };
