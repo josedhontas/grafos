@@ -21,7 +21,11 @@ const MyNetworkComponent: React.FC = () => {
   const handleNavigationChange = (event: React.SyntheticEvent, newValue: string | number) => {
     setValue(Number(newValue));
       if (network) {
-    network.off('click'); // Remover o evento de clique anterior
+    network.off('click');
+    network.off('select'); 
+    network.off('selectNode'); 
+
+
   }
     if (newValue == 0) {
       addNodeMode()
