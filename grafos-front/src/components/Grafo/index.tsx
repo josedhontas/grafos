@@ -136,9 +136,11 @@ const MyNetworkComponent: React.FC = () => {
         enabled: false,
         addNode: (nodeData: Node, callback: (data: Node) => void) => {
           const vertice = grafo.adicionarVertice()
+          //const grau = grafo.grauVertice(vertice)
           const novoVertice = {
             id: vertice,
             label: String(vertice),
+            //title: `Grau: ${grau}`,
             x: nodeData.x,
             y: nodeData.y,
           };
@@ -150,6 +152,7 @@ const MyNetworkComponent: React.FC = () => {
           }
 
         },
+
         addEdge: (edgeData: Edge, callback: (data: Edge) => void) => {
           const from = Number(edgeData.from);
           const to = Number(edgeData.to);
@@ -166,21 +169,43 @@ const MyNetworkComponent: React.FC = () => {
           grafo.adicionarAresta(from, to);
           grafo.exibirGrafo();
           data.edges.add(novaAresta);
+          /*
+          const fromNode = data.nodes.get(from);
+          const toNode = data.nodes.get(to);
+          if (fromNode && toNode) {
+            const fromNodeGrado = grafo.grauVertice(from);
+            const toNodeGrado = grafo.grauVertice(to);
+            data.nodes.update({ ...fromNode, title: `Grau: ${fromNodeGrado}` });
+            data.nodes.update({ ...toNode, title: `Grau: ${toNodeGrado}` });
+          }*/
 
           if (network) {
             network.setData(data);
           }
         },
+
         deleteNode: (nodeData: any, callback: () => void) => {
           const vertice = nodeData.nodes[0];
           data.nodes.remove(vertice);
           grafo.removerVertice(Number(vertice));
-          grafo.exibirGrafo()
+          grafo.exibirGrafo();
+
+          /*const adjacentes = grafo.adjacencia.get(Number(vertice));
+          if (adjacentes) {
+            adjacentes.forEach((adjacente) => {
+              const node = data.nodes.get(adjacente);
+              if (node) {
+                const grado = grafo.grauVertice(adjacente);
+                data.nodes.update({ ...node, title: `Grau: ${grado}` });
+              }
+            });
+          }*/
           if (network) {
             network.setData(data);
           }
           callback();
         },
+
         deleteEdge: (edgeData: any, callback: () => void) => {
           const edgeId = edgeData.edges[0];
           const [from, to] = edgeId.split(",").map(Number);

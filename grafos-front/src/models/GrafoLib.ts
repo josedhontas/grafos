@@ -1,7 +1,7 @@
 export class GrafoLib {
   private vertices: number;
   private arestas: number;
-  private adjacencia: Map<number, number[]>;
+  public adjacencia: Map<number, number[]>;
 
   constructor() {
     this.vertices = 0;
