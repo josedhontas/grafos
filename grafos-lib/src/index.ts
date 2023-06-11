@@ -17,6 +17,7 @@ grafo.adicionarAresta(3, 4);
 grafo.adicionarAresta(4, 1);
 
 grafo.exibirGrafo()
+grafo.grauVertice(2)
 // Remover um vértice e uma aresta
 grafo.removerVertice(3);
 grafo.removerAresta(4, 1);

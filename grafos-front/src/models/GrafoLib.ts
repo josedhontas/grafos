@@ -70,11 +70,13 @@ export class GrafoLib {
     }
 
     const verticesAdjacentes = this.adjacencia.get(vertice);
+    var grau = 0
     if(verticesAdjacentes){
-      return verticesAdjacentes.length;
+      grau = verticesAdjacentes.length;
     }
-
-    return 0;
+    
+    console.log(`Grau do vértice ${vertice}: ${grau}`)
+    return grau;
   }
 
   exibirGrafo(): void {
