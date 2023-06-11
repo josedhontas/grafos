@@ -12,6 +12,7 @@ export class GrafoLib {
   adicionarVertice(): number {
     this.vertices++
     this.adjacencia.set(this.vertices, []);
+    console.log(`Vértice ${this.vertices} adicionado`)
     return this.vertices
   }
 
@@ -22,6 +23,7 @@ export class GrafoLib {
 
     this.adjacencia.get(verticeOrigem)?.push(verticeDestino);
     this.adjacencia.get(verticeDestino)?.push(verticeOrigem);
+    console.log(`Aresta ${verticeOrigem},${verticeDestino} adicionada`)
     this.arestas++;
   }
 
@@ -42,7 +44,8 @@ export class GrafoLib {
     }
 
     this.adjacencia.delete(vertice);
-    this.vertices--;
+    console.log(`Vertice ${vertice} removido`)
+    //this.vertices--;
   }
 
   removerAresta(verticeOrigem: number, verticeDestino: number): void {
@@ -58,6 +61,20 @@ export class GrafoLib {
       this.adjacencia.get(verticeDestino)?.splice(indexDestino, 1);
       this.arestas--;
     }
+    console.log(`Aresta ${verticeOrigem},${verticeDestino} removida`)
+  }
+
+  grauVertice(vertice: number): number {
+    if(!this.adjacencia.has(vertice)){
+      throw new Error('Vértice não existe no grafo');
+    }
+
+    const verticesAdjacentes = this.adjacencia.get(vertice);
+    if(verticesAdjacentes){
+      return verticesAdjacentes.length;
+    }
+
+    return 0;
   }
 
   exibirGrafo(): void {

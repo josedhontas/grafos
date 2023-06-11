@@ -64,6 +64,19 @@ export class GrafoLib {
     console.log(`Aresta ${verticeOrigem},${verticeDestino} removida`)
   }
 
+  grauVertice(vertice: number): number {
+    if(!this.adjacencia.has(vertice)){
+      throw new Error('Vértice não existe no grafo');
+    }
+
+    const verticesAdjacentes = this.adjacencia.get(vertice);
+    if(verticesAdjacentes){
+      return verticesAdjacentes.length;
+    }
+
+    return 0;
+  }
+
   exibirGrafo(): void {
     for (const [vertice, adjacentes] of Array.from(this.adjacencia.entries())) {
       const arestas = adjacentes.join(", ");
