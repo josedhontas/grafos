@@ -75,7 +75,7 @@ const MyNetworkComponent: React.FC = () => {
       const handleSingleClick = () => {
         console.log('teste')
         network.addEdgeMode();
-        network.unselectAll(); 
+        //network.unselectAll(); 
 
       };
   
