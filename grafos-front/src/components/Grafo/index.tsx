@@ -9,6 +9,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Network, Node, Edge } from 'vis-network';
 import { DataSet } from 'vis-network/standalone';
 import { GrafoLib } from '../../models/GrafoLib';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
+import GrafoAleatorio from '../../models/GrafoAleatorio';
 
 interface GraphNode extends Node {
   connections?: string[];
@@ -16,16 +18,16 @@ interface GraphNode extends Node {
 
 const MyNetworkComponent: React.FC = () => {
   const [value, setValue] = React.useState<number>(8);
+  
 
   const handleNavigationChange = (event: React.SyntheticEvent, newValue: string | number) => {
     setValue(Number(newValue));
-      if (network) {
-    network.off('click');
-    network.off('select'); 
-    network.off('selectNode'); 
-
-
-  }
+    if (network) {
+      network.off('click');
+      network.off('select');
+      network.off('selectNode');
+      network.off('selectEdge');
+    }
     if (newValue === 0) {
       addNodeMode()
     }
@@ -34,11 +36,15 @@ const MyNetworkComponent: React.FC = () => {
       addEdgeMode()
     }
 
-    if( newValue === 2){
+    if (newValue === 2) {
       editEdgeMode()
     }
 
     if (newValue === 3) {
+      geraGrafoAleatorio()
+    }
+
+    if (newValue === 4) {
       deleteSelected();
     }
 
@@ -47,15 +53,23 @@ const MyNetworkComponent: React.FC = () => {
     const newGrafo = new GrafoLib();
     return newGrafo;
   });
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [network, setNetwork] = useState<Network | null>(null);
-  const data = {
+  const [data, setData] = useState<{ nodes: DataSet<GraphNode>; edges: DataSet<Edge> }>({
     nodes: new DataSet<GraphNode>(),
     edges: new DataSet<Edge>(),
-  };
+  });
 
   useEffect(() => {
   }, [grafo]);
+
+  useEffect(() => {
+    if (network) {
+      //grafo.exibirGrafo();
+      network.setData(data);
+    }
+  }, [data]);
 
   const addNodeMode = () => {
     if (network) {
@@ -82,12 +96,10 @@ const MyNetworkComponent: React.FC = () => {
         //network.unselectAll(); 
 
       };
-  
-  
       network.on('selectNode', handleSingleClick);
     }
   };
-  
+
 
   const deleteSelected = () => {
     if (network) {
@@ -105,11 +117,19 @@ const MyNetworkComponent: React.FC = () => {
       const handleSingleClick = () => {
         network.editEdgeMode()
       };
-  
+
       network.off('selectNode');
       network.on('select', handleSingleClick);
     }
   };
+
+  const geraGrafoAleatorio = () => {
+    const grafoAleatorio = GrafoAleatorio();
+    setGrafo(grafoAleatorio[1]);
+    setData(grafoAleatorio[0]);
+    console.log(grafo)
+  };
+  
 
 
   const draw = () => {
@@ -244,7 +264,7 @@ const MyNetworkComponent: React.FC = () => {
 
   return (
     <div style={{ backgroundColor: '#B0C4DE' }}>
-    <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: "100%" }}>
         <BottomNavigation
           showLabels
           value={value}
@@ -253,11 +273,12 @@ const MyNetworkComponent: React.FC = () => {
           <BottomNavigationAction label="Vértice" icon={<AddCircleOutlineIcon />} />
           <BottomNavigationAction label="Aresta" icon={<CommitIcon />} />
           <BottomNavigationAction label="Editar" icon={<EditIcon />} />
+          <BottomNavigationAction label="Grafo aleatório" icon={<ShuffleIcon />} />
           <BottomNavigationAction label="Apagar" icon={<ClearIcon />} />
         </BottomNavigation>
       </Box>
       <div style={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-50px', }}>
-        <div ref={containerRef} id="mynetwork" style={{ width: '70%', height: '500px', backgroundColor: '#dddddd', borderRadius: '20px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)'  }}></div>
+        <div ref={containerRef} id="mynetwork" style={{ width: '70%', height: '500px', backgroundColor: '#dddddd', borderRadius: '20px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}></div>
         <div></div>
       </div>
 
