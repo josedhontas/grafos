@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import EditIcon from '@mui/icons-material/Edit';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CommitIcon from '@mui/icons-material/Commit';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Network, Node, Edge } from 'vis-network';
 import { DataSet } from 'vis-network/standalone';
@@ -75,7 +75,7 @@ const MyNetworkComponent: React.FC = () => {
       const handleSingleClick = () => {
         console.log('teste')
         network.addEdgeMode();
-        //network.unselectAll(); 
+        network.unselectAll(); 
 
       };
   
@@ -211,7 +211,7 @@ const MyNetworkComponent: React.FC = () => {
           onChange={handleNavigationChange}
         >
           <BottomNavigationAction label="Vértice" icon={<AddCircleOutlineIcon />} />
-          <BottomNavigationAction label="Aresta" icon={<FavoriteIcon />} />
+          <BottomNavigationAction label="Aresta" icon={<CommitIcon />} />
           <BottomNavigationAction label="Editar" icon={<EditIcon />} />
           <BottomNavigationAction label="Apagar" icon={<ClearIcon />} />
         </BottomNavigation>
