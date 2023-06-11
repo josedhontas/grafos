@@ -71,9 +71,26 @@ const MyNetworkComponent: React.FC = () => {
 
   const addEdgeMode = () => {
     if (network) {
+      const handleSingleClick = () => {
+        const fakeClickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+        });
+
+          handleClick(fakeClickEvent);
+      };
+  
+      const handleClick = (event: MouseEvent) => {
+        console.log('teste')
+        network.addEdgeMode();
+      };
+  
       network.addEdgeMode();
+      network.on('click', handleSingleClick);
     }
   };
+  
 
   const deleteSelected = () => {
     if (network) {
