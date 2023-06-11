@@ -34,6 +34,10 @@ const MyNetworkComponent: React.FC = () => {
       addEdgeMode()
     }
 
+    if( newValue === 2){
+      editEdgeMode()
+    }
+
     if (newValue === 3) {
       deleteSelected();
     }
@@ -75,7 +79,7 @@ const MyNetworkComponent: React.FC = () => {
       const handleSingleClick = () => {
         console.log('teste')
         network.addEdgeMode();
-        network.unselectAll(); 
+        //network.unselectAll(); 
 
       };
   
@@ -93,6 +97,17 @@ const MyNetworkComponent: React.FC = () => {
       };
       network.on('select', handleSingleClick);
 
+    }
+  };
+
+  const editEdgeMode = () => {
+    if (network) {
+      const handleSingleClick = () => {
+        network.editEdgeMode()
+      };
+  
+      network.off('selectNode');
+      network.on('select', handleSingleClick);
     }
   };
 
