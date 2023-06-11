@@ -4,7 +4,6 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import EditIcon from '@mui/icons-material/Edit';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Network, Node, Edge } from 'vis-network';
@@ -27,15 +26,15 @@ const MyNetworkComponent: React.FC = () => {
 
 
   }
-    if (newValue == 0) {
+    if (newValue === 0) {
       addNodeMode()
     }
 
-    if (newValue == 1) {
+    if (newValue === 1) {
       addEdgeMode()
     }
 
-    if (newValue == 3) {
+    if (newValue === 3) {
       deleteSelected();
     }
 
@@ -76,10 +75,11 @@ const MyNetworkComponent: React.FC = () => {
       const handleSingleClick = () => {
         console.log('teste')
         network.addEdgeMode();
+        network.unselectAll(); 
+
       };
   
   
-      network.addEdgeMode();
       network.on('selectNode', handleSingleClick);
     }
   };
