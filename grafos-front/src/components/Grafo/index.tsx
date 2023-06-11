@@ -32,9 +32,7 @@ const MyNetworkComponent: React.FC = () => {
     }
 
     if (newValue == 3) {
-      if (network) {
-        network.deleteSelected();
-      }
+      deleteSelected();
     }
 
   };
@@ -72,35 +70,34 @@ const MyNetworkComponent: React.FC = () => {
   const addEdgeMode = () => {
     if (network) {
       const handleSingleClick = () => {
-        const fakeClickEvent = new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-        });
-
-          handleClick(fakeClickEvent);
-      };
-  
-      const handleClick = (event: MouseEvent) => {
         console.log('teste')
         network.addEdgeMode();
       };
   
+  
       network.addEdgeMode();
-      network.on('click', handleSingleClick);
+      network.on('selectNode', handleSingleClick);
     }
   };
   
 
   const deleteSelected = () => {
     if (network) {
-      network.deleteSelected();
+      const handleSingleClick = () => {
+        console.log('teste')
+        network.deleteSelected();
+      };
+      network.on('select', handleSingleClick);
+
     }
   };
 
 
   const draw = () => {
     const options = {
+      interaction: {
+        hover: true // Habilita a funcionalidade de hover
+      },
       nodes: {
         shape: "dot",
         size: 15,
@@ -130,6 +127,7 @@ const MyNetworkComponent: React.FC = () => {
           grafo.exibirGrafo()
           if (network) {
             network.setData(data);
+
           }
 
         },
