@@ -11,7 +11,7 @@ interface Edge {
 }
 
 interface GrafoVisNetwork {
-  nodes: Node[];
+  nodes: Node[]; 
   edges: Edge[];
 }
 
