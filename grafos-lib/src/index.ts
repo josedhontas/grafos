@@ -1,25 +1,8 @@
-import { GrafoLib } from "./models/GrafoLib";
+import Grafo1 from "./exemplos/Grafo1";
+import Grafo2 from "./exemplos/Grafo2";
 
-// Criar um objeto Grafo
-const grafo = new GrafoLib();
-
-// Adicionar vértices
-grafo.adicionarVertice();
-grafo.adicionarVertice();
-grafo.adicionarVertice();
-grafo.adicionarVertice();
-
-grafo.exibirGrafo()
-// Adicionar arestas
-grafo.adicionarAresta(1, 2);
-grafo.adicionarAresta(2, 3);
-grafo.adicionarAresta(3, 4);
-grafo.adicionarAresta(4, 1);
-
-grafo.exibirGrafo()
-grafo.grauVertice(2)
-// Remover um vértice e uma aresta
-grafo.removerVertice(3);
-grafo.removerAresta(4, 1);
-
-grafo.exibirGrafo();
+console.log("Grafo 1\n")
+Grafo1()
+console.log("\n")
+console.log("Grafo 2\n")
+Grafo2()

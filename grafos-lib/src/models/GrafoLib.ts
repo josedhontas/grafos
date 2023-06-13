@@ -1,19 +1,18 @@
 export class GrafoLib {
-  private vertices: number;
+  private vertices: Map<number, string>;
   private arestas: number;
   private adjacencia: Map<number, number[]>;
 
   constructor() {
-    this.vertices = 0;
+    this.vertices = new Map<number, string>();
     this.arestas = 0;
     this.adjacencia = new Map<number, number[]>();
   }
 
-  adicionarVertice(): number {
-    this.vertices++
-    this.adjacencia.set(this.vertices, []);
-    console.log(`Vértice ${this.vertices} adicionado`)
-    return this.vertices
+  adicionarVertice(indice: number, rotulo: string = ""): void {
+    this.vertices.set(indice, rotulo);
+    this.adjacencia.set(indice, []);
+    //console.log(`Vértice ${indice} adicionado com rótulo "${rotulo}"`);
   }
 
   adicionarAresta(verticeOrigem: number, verticeDestino: number): void {
@@ -23,29 +22,8 @@ export class GrafoLib {
 
     this.adjacencia.get(verticeOrigem)?.push(verticeDestino);
     this.adjacencia.get(verticeDestino)?.push(verticeOrigem);
-    console.log(`Aresta ${verticeOrigem},${verticeDestino} adicionada`)
     this.arestas++;
-  }
-
-  removerVertice(vertice: number): void {
-    if (!this.adjacencia.has(vertice)) {
-      throw new Error('Vértice não existe no grafo.');
-    }
-
-    const verticesAdjacentes = this.adjacencia.get(vertice);
-    if (verticesAdjacentes) {
-      for (const adjacente of verticesAdjacentes) {
-        const index = this.adjacencia.get(adjacente)?.indexOf(vertice);
-        if (index !== undefined && index > -1) {
-          this.adjacencia.get(adjacente)?.splice(index, 1);
-          this.arestas--;
-        }
-      }
-    }
-
-    this.adjacencia.delete(vertice);
-    console.log(`Vertice ${vertice} removido`)
-    //this.vertices--;
+    //console.log(`Aresta adicionada entre os vértices ${verticeOrigem} e ${verticeDestino}`);
   }
 
   removerAresta(verticeOrigem: number, verticeDestino: number): void {
@@ -60,29 +38,37 @@ export class GrafoLib {
       this.adjacencia.get(verticeOrigem)?.splice(indexOrigem, 1);
       this.adjacencia.get(verticeDestino)?.splice(indexDestino, 1);
       this.arestas--;
+      //console.log(`Aresta removida entre os vértices ${verticeOrigem} e ${verticeDestino}`);
     }
-    console.log(`Aresta ${verticeOrigem},${verticeDestino} removida`)
   }
 
   grauVertice(vertice: number): number {
-    if(!this.adjacencia.has(vertice)){
+    if (!this.adjacencia.has(vertice)) {
       throw new Error('Vértice não existe no grafo');
     }
 
-    const verticesAdjacentes = this.adjacencia.get(vertice);
-    var grau = 0
-    if(verticesAdjacentes){
-      grau = verticesAdjacentes.length;
-    }
-    
-    console.log(`Grau do vértice ${vertice}: ${grau}`)
+    const grau = this.adjacencia.get(vertice)?.length || 0;
+    //console.log(`Grau do vértice ${vertice}: ${grau}`);
     return grau;
   }
 
-  exibirGrafo(): void {
-    for (const [vertice, adjacentes] of Array.from(this.adjacencia.entries())) {
-      const arestas = adjacentes.join(", ");
-      console.log(`Vértice ${vertice}: arestas -> ${arestas}`);
+  saoVizinhos(vertice1: number, vertice2: number): boolean {
+    if (!this.adjacencia.has(vertice1) || !this.adjacencia.has(vertice2)) {
+      return false;
+    }
+
+    const vizinhosVertice1 = this.adjacencia.get(vertice1) || [];
+    return vizinhosVertice1.includes(vertice2);
+  }
+
+  imprimirGrafo(): void {
+    console.log(`Número de vértices: ${this.vertices.size}`);
+    console.log(`Número de arestas: ${this.arestas}`);
+
+    for (const [indice, rotulo] of Array.from(this.vertices.entries())) {
+      const arestas = this.adjacencia.get(indice)?.join(", ") || "";
+      const grau = this.grauVertice(indice);
+      console.log(`Vértice ${indice} (${rotulo}): arestas -> ${arestas}, grau: ${grau}`);
     }
   }
 }
