@@ -19,13 +19,14 @@ Para executar este projeto, certifique-se de ter as seguintes ferramentas instal
 
 ## Como executar
 1. Certifique-se de ter o Node.js e o npm instalados em sua máquina.
-2. Execute o seguinte comando para instalar as dependências do projeto:
+2. Navegue até o diretório "grafos-front" do projeto no terminal.
+3. Execute o seguinte comando para instalar as dependências do projeto:
 ```shell script
 npm install
 ```
-3. Após a conclusão da instalação das dependências, execute o seguinte comando para iniciar o aplicativo:
+4. Após a conclusão da instalação das dependências, execute o seguinte comando para iniciar o aplicativo:
 ```shell script
 npm start
 ```
-4. Aguarde até que o aplicativo seja compilado e iniciado. Após a conclusão, você poderá acessá-lo no seu navegador em http://localhost:3000.
+5. Aguarde até que o aplicativo seja compilado e iniciado. Após a conclusão, você poderá acessá-lo no seu navegador em http://localhost:3000.
 
