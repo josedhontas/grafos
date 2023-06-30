@@ -1,12 +1,13 @@
-# PGEmail
+## Grafos interface
 
-## Sobre o projeto
-Este projeto, denominado PGEmail, foi desenvolvido por José Dhonatas Alves Sales. Ele consiste em uma aplicação web para gerenciamento de processos jurídicos.
+Esta é uma atividadade para a disciplina de Grafos e Algoritmos Computacionais, desenvolvido por: 
+- José Dhonatas Alves Sales
+- José Clenildo Menezes Silva Sobrinho
 
 ## Tecnologias:
 - Front-end:
-  - React (Javascript)
-  - Material ui
+  - React (Typescript)
+  - Material UI
 
 ## Link do projeto
 O projeto está disponível online no seguinte endereço: [grafos](https://grafos.josedhonatas.ninja)
